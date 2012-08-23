@@ -165,6 +165,7 @@ class ReverseSortedManyRelatedObjectsDescriptor(ReverseManyRelatedObjectsDescrip
         if DJANGO_VERSION[:2] >= (1, 4):
             init_kwargs['through'] = self.field.rel.through
             init_kwargs['query_field_name'] = self.field.related_query_name()
+            init_kwargs['prefetch_cache_name'] = self.related.field.related_query_name()
         else:
             init_kwargs['core_filters'] = {'%s__pk' % self.field.related_query_name(): instance._get_pk_val()}
         manager = RelatedManager(**init_kwargs)
