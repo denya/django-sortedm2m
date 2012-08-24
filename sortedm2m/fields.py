@@ -83,14 +83,15 @@ def create_sorted_many_related_manager(superclass, rel):
                 )])
 
         def get_prefetch_query_set(self, instances):
-            response = super(SortedRelatedManager, self).\
-                get_prefetch_query_set(instances)
+            response = list(super(SortedRelatedManager, self).\
+                get_prefetch_query_set(instances))
+            from ipdb import set_trace;set_trace() ############################## Breakpoint ##############################
             response[0] = response[0].\
                 extra(order_by=['%s.%s' % (
                     rel.through._meta.db_table,
                     rel.through._sort_field_name,
                 )])
-            return response
+            return tuple(response)
 
         def _add_items(self, source_field_name, target_field_name, *objs):
             # join_table: name of the m2m link table
