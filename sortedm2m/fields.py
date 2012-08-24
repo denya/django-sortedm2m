@@ -76,7 +76,7 @@ def create_sorted_many_related_manager(superclass, rel):
             # are hidden for joins because we set ``auto_created`` on the
             # intermediary's meta options.
             try:
-                return self.instance._prefetched_objects_cache[rel_field.related_query_name()]
+                return self.instance._prefetched_objects_cache[self.prefetch_cache_name]
             except (AttributeError, KeyError):
                 return super(SortedRelatedManager, self).\
                     get_query_set().\
