@@ -82,6 +82,16 @@ def create_sorted_many_related_manager(superclass, rel):
                     rel.through._sort_field_name,
                 )])
 
+        def get_prefetch_query_set(self, instances):
+            response = super(SortedRelatedManager, self).\
+                get_prefetch_query_set(instances)
+            response[0] = response[0].\
+                extra(order_by=['%s.%s' % (
+                    rel.through._meta.db_table,
+                    rel.through._sort_field_name,
+                )])
+            return response
+
         def _add_items(self, source_field_name, target_field_name, *objs):
             # join_table: name of the m2m link table
             # source_field_name: the PK fieldname in join_table for the source object
