@@ -121,6 +121,8 @@ def create_sorted_many_related_manager(superclass, rel):
                     source_field_name: self._pk_val,
                     '%s__in' % target_field_name: new_ids,
                 })
+                """
+                # Denya: i want sorted M2M list, not set
                 for val in vals:
                     if val in new_ids:
                         new_ids.remove(val)
@@ -129,6 +131,7 @@ def create_sorted_many_related_manager(superclass, rel):
                     if pk not in _new_ids:
                         _new_ids.append(pk)
                 new_ids = _new_ids
+                """
                 new_ids_set = set(new_ids)
                 if self.reverse or source_field_name == self.source_field_name:
                     # Don't send the signal when we are inserting the
@@ -289,7 +292,7 @@ if south is not None and 'south' in settings.INSTALLED_APPS:
             (%(right_field)r, models.ForeignKey(orm[%(right_model_key)r], null=False)),
             (%(sort_field)r, models.IntegerField())
         ))
-        db.create_unique(%(table_name)r, [%(left_column)r, %(right_column)r])'''
+        db.create_unique(%(table_name)r, [%(left_column)r, %(right_column)r, %(sort_field)r])'''
 
         def console_line(self):
             if isinstance(self.field, SortedManyToManyField) and self.field.sorted:
