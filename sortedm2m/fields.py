@@ -42,7 +42,7 @@ def create_sorted_many_to_many_intermediate_model(field, klass):
         'managed': managed,
         'auto_created': klass,
         'app_label': klass._meta.app_label,
-        'unique_together': (from_, to),
+        'unique_together': (from_, to, SORT_VALUE_FIELD_NAME),
         'ordering': (SORT_VALUE_FIELD_NAME,),
         'verbose_name': '%(from)s-%(to)s relationship' % {'from': from_, 'to': to},
         'verbose_name_plural': '%(from)s-%(to)s relationships' % {'from': from_, 'to': to},
