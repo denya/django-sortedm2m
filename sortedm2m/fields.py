@@ -50,7 +50,10 @@ def create_sorted_many_to_many_intermediate_model(field, klass):
     # Construct and return the new class.
     def default_sort_value(name):
         model = models.get_model(klass._meta.app_label, name)
-        return model._default_manager.count()
+        try:
+            model._default_manager.order_by("-id").get().id
+        except:
+            return 1
 
     default_sort_value = curry(default_sort_value, name)
 
