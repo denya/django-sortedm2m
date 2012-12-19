@@ -51,7 +51,7 @@ def create_sorted_many_to_many_intermediate_model(field, klass):
     def default_sort_value(name):
         model = models.get_model(klass._meta.app_label, name)
         try:
-            return model._default_manager.order_by("-id")[0]
+            return model._default_manager.order_by("-id")[0].id
         except:
             return 1
 
