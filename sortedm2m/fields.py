@@ -43,17 +43,14 @@ def create_sorted_many_to_many_intermediate_model(field, klass):
         'auto_created': klass,
         'app_label': klass._meta.app_label,
         'unique_together': (from_, to, SORT_VALUE_FIELD_NAME),
-        'ordering': (SORT_VALUE_FIELD_NAME,),
+        #'ordering': (SORT_VALUE_FIELD_NAME,),
+        'ordering': ('id',),
         'verbose_name': '%(from)s-%(to)s relationship' % {'from': from_, 'to': to},
         'verbose_name_plural': '%(from)s-%(to)s relationships' % {'from': from_, 'to': to},
     })
     # Construct and return the new class.
     def default_sort_value(name):
-        model = models.get_model(klass._meta.app_label, name)
-        try:
-            return model._default_manager.order_by("-id")[0].id
-        except:
-            return 1
+        return 1
 
     default_sort_value = curry(default_sort_value, name)
 
@@ -63,7 +60,8 @@ def create_sorted_many_to_many_intermediate_model(field, klass):
         from_: models.ForeignKey(klass, related_name='%s+' % name),
         to: models.ForeignKey(to_model, related_name='%s+' % name),
         SORT_VALUE_FIELD_NAME: models.IntegerField(default=default_sort_value),
-        '_sort_field_name': SORT_VALUE_FIELD_NAME,
+        #'_sort_field_name': SORT_VALUE_FIELD_NAME,
+        '_sort_field_name': 'id',
         '_from_field_name': from_,
         '_to_field_name': to,
     })
