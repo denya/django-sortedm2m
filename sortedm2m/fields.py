@@ -42,7 +42,7 @@ def create_sorted_many_to_many_intermediate_model(field, klass):
         'managed': managed,
         'auto_created': klass,
         'app_label': klass._meta.app_label,
-        'unique_together': (from_, to, SORT_VALUE_FIELD_NAME),
+        'unique_together': (from_, to, 'id'),
         #'ordering': (SORT_VALUE_FIELD_NAME,),
         'ordering': ('id',),
         'verbose_name': '%(from)s-%(to)s relationship' % {'from': from_, 'to': to},
@@ -293,7 +293,7 @@ if south is not None and 'south' in settings.INSTALLED_APPS:
             (%(right_field)r, models.ForeignKey(orm[%(right_model_key)r], null=False)),
             (%(sort_field)r, models.IntegerField())
         ))
-        db.create_unique(%(table_name)r, [%(left_column)r, %(right_column)r, %(sort_field)r])'''
+        db.create_unique(%(table_name)r, [%(left_column)r, %(right_column)r, 'id'])'''
 
         def console_line(self):
             if isinstance(self.field, SortedManyToManyField) and self.field.sorted:
